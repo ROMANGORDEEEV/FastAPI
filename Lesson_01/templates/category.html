@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category_name }} - ВетГид{% endblock %}
+
+{% block content %}
+<h2>{{ category_name }}</h2>
+<ul>
+    {% for subcategory in subcategories %}
+    <li><a href="{{ url_for('subcategory', category_name=category_name|lower, subcategory_name=subcategory) }}">{{
+            subcategory }}</a></li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
