@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Вход - ВетГид{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Вход</h1>
+    <form action="/setcookie" method="POST">
+        <label for="nm">Ваше Имя:</label>
+        <input type="text" id="nm" name="nm"><br><br>
+        <label for="email">Ваш Email:</label>
+        <input type="text" id="email" name="email"><br><br>
+        <input type="submit" value="Отправить">
+    </form>
+</div>
+{% endblock %}
