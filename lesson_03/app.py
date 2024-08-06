@@ -9,9 +9,9 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "your_secret_key"
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config['SECRET_KEY'] = 'your_secret_key'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
@@ -39,16 +39,16 @@ class User(db.Model):
 
 
 class RegistrationForm(FlaskForm):
-    first_name = StringField("Имя", validators=[DataRequired(), Length(min=2, max=150)])
-    last_name = StringField(
-        "Фамилия", validators=[DataRequired(), Length(min=2, max=150)]
-    )
-    email = StringField("Email", validators=[DataRequired(), Email()])
-    password = PasswordField("Пароль", validators=[DataRequired(), Length(min=6)])
-    confirm_password = PasswordField(
-        "Подтвердите Пароль", validators=[DataRequired(), EqualTo("password")]
-    )
-    submit = SubmitField("Зарегистрироваться")
+    first_name = StringField(
+        'Имя', validators=[DataRequired(), Length(min=2, max=150)])
+    last_name = StringField('Фамилия', validators=[
+                            DataRequired(), Length(min=2, max=150)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Пароль', validators=[
+                             DataRequired(), Length(min=6)])
+    confirm_password = PasswordField('Подтвердите Пароль', validators=[
+                                     DataRequired(), EqualTo('password')])
+    submit = SubmitField('Зарегистрироваться')
 
 
 @app.before_request
@@ -56,31 +56,31 @@ def create_tables():
     db.create_all()
 
 
-@app.route("/register", methods=["GET", "POST"])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_password = generate_password_hash(form.password.data, method="sha256")
+        hashed_password = generate_password_hash(
+            form.password.data, method='sha256')
         existing_user = User.find_by_email(form.email.data)
         if existing_user:
-            flash("Пользователь с таким email уже зарегистрирован", "danger")
+            flash('Пользователь с таким email уже зарегистрирован', 'danger')
         else:
-            new_user = User(
-                first_name=form.first_name.data,
-                last_name=form.last_name.data,
-                email=form.email.data,
-                password=hashed_password,
-            )
+            new_user = User(first_name=form.first_name.data, last_name=form.last_name.data,
+                            email=form.email.data, password=hashed_password)
             try:
                 new_user.save_to_db()
-                flash("Вы успешно зарегистрированы!", "success")
+                flash('Вы успешно зарегистрированы!', 'success')
             except IntegrityError:
-                flash("Что-то пошло не так. Пожалуйста, попробуйте еще раз.", "danger")
+                flash('Что-то пошло не так. Пожалуйста, попробуйте еще раз.', 'danger')
 
-        return redirect(url_for("register"))
+        return redirect(url_for('register'))
 
-    return render_template("register.html", form=form)
+    return render_template('register.html', form=form)
 
 
-if __name__ == "__main__":
-    app.run()
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+# key
